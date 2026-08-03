@@ -11,3 +11,7 @@ spring:
     properties:
       hibernate:
         show_sql: true
+
+  flyway:
+    enabled:
+      true
