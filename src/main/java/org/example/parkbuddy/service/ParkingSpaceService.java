@@ -15,5 +15,5 @@ public interface ParkingSpaceService {
 
     ParkingSpace modifyParkingSpace(ParkingSpace parkingSpace);
 
-    void deleteParkingSpace(ParkingSpace parkingSpace);
+    void deleteParkingSpace(long id);
 }
