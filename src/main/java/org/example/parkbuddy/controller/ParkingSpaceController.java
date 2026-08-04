@@ -1,6 +1,8 @@
 package org.example.parkbuddy.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.parkbuddy.dto.CreateParkingSpaceDTO;
+import org.example.parkbuddy.dto.ModifyParkingSpaceDTO;
 import org.example.parkbuddy.model.ParkingSpace;
 import org.example.parkbuddy.service.ParkingSpaceService;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +17,7 @@ public class ParkingSpaceController {
 
     private final ParkingSpaceService parkingSpaceService;
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<ParkingSpace>> findAllParkingSpaces() {
         return ResponseEntity.ok(parkingSpaceService.getParkingSpaces());
     }
@@ -29,5 +31,15 @@ public class ParkingSpaceController {
         } else {
             return ResponseEntity.ok(space);
         }
+    }
+
+    @PostMapping("/new")
+    public ResponseEntity<ParkingSpace> createParkingSpace(@RequestBody CreateParkingSpaceDTO createParkingSpaceDTO) {
+        return ResponseEntity.ok(parkingSpaceService.createParkingSpace(createParkingSpaceDTO));
+    }
+
+    @PatchMapping("/modify")
+    public ResponseEntity<ParkingSpace> modifyParkingSpace(@RequestBody ModifyParkingSpaceDTO dto) {
+        return ResponseEntity.ok(parkingSpaceService.modifyParkingSpace(dto));
     }
 }

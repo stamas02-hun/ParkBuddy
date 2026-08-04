@@ -1,6 +1,8 @@
 package org.example.parkbuddy.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.parkbuddy.dto.CreateParkingSpaceDTO;
+import org.example.parkbuddy.dto.ModifyParkingSpaceDTO;
 import org.example.parkbuddy.model.ParkingSpace;
 import org.example.parkbuddy.repository.ParkingSpaceRepository;
 import org.springframework.stereotype.Service;
@@ -25,12 +27,22 @@ public class ParkingSpaceServiceImpl implements ParkingSpaceService {
     }
 
     @Override
-    public ParkingSpace createParkingSpace(ParkingSpace parkingSpace) {
+    public ParkingSpace createParkingSpace(CreateParkingSpaceDTO dto) {
+        ParkingSpace parkingSpace = new ParkingSpace();
+        parkingSpace.setName(dto.name);
         return parkingSpaceRepository.save(parkingSpace);
     }
 
     @Override
-    public ParkingSpace modifyParkingSpace(ParkingSpace parkingSpace) {
+    public ParkingSpace modifyParkingSpace(ModifyParkingSpaceDTO dto) {
+        ParkingSpace parkingSpace = parkingSpaceRepository.findById(dto.id).orElse(null);
+
+        if (parkingSpace == null) {
+            return null;
+        }
+
+        parkingSpace.setName(dto.name);
+
         return parkingSpaceRepository.save(parkingSpace);
     }
 

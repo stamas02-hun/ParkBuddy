@@ -1,5 +1,7 @@
 package org.example.parkbuddy.service;
 
+import org.example.parkbuddy.dto.CreateParkingSpaceDTO;
+import org.example.parkbuddy.dto.ModifyParkingSpaceDTO;
 import org.example.parkbuddy.model.ParkingSpace;
 
 import java.util.List;
@@ -11,9 +13,9 @@ public interface ParkingSpaceService {
 
     Optional<ParkingSpace> getParkingSpaceById(long id);
 
-    ParkingSpace createParkingSpace(ParkingSpace parkingSpace);
+    ParkingSpace createParkingSpace(CreateParkingSpaceDTO dto);
 
-    ParkingSpace modifyParkingSpace(ParkingSpace parkingSpace);
+    ParkingSpace modifyParkingSpace(ModifyParkingSpaceDTO dto);
 
     void deleteParkingSpace(long id);
 }
