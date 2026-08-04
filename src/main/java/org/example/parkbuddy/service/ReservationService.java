@@ -12,7 +12,7 @@ public interface ReservationService {
 
     List<Reservation> findAllReservations();
 
-    List<Reservation> findAllReservationsByParkingSpace();
+    List<Reservation> findAllReservationsByParkingSpace(long parkingSpaceId);
 
     void cancelReservation(UUID id);
 }

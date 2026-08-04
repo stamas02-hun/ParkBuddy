@@ -42,13 +42,13 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Reservation> findAllReservationsByParkingSpace() {
-        return List.of();
+    public List<Reservation> findAllReservationsByParkingSpace(long parkingSpaceId) {
+        return reservationRepository.findAllByParkingSpace_Id(parkingSpaceId);
     }
 
     @Override
     public void cancelReservation(UUID id) {
-
+        
     }
 
     private boolean isReservable(long parkingSpaceId, LocalDateTime start, LocalDateTime end) {
