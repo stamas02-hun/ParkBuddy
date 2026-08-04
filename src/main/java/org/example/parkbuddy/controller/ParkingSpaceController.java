@@ -24,13 +24,8 @@ public class ParkingSpaceController {
 
     @GetMapping("/get")
     public ResponseEntity<ParkingSpace> findParkingSpaceById(@RequestParam long id) {
-        ParkingSpace space = parkingSpaceService.getParkingSpaceById(id).orElse(null);
-
-        if (space == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(space);
-        }
+        ParkingSpace space = parkingSpaceService.getParkingSpaceById(id);
+        return ResponseEntity.ok(space);
     }
 
     @PostMapping("/new")
