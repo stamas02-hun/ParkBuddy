@@ -1,4 +1,4 @@
-package org.example.parkbuddy;
+package org.example.parkbuddy.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
