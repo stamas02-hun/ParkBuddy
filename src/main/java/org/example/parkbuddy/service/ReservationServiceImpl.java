@@ -49,7 +49,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public void cancelReservation(UUID id) {
+    public Reservation cancelReservation(UUID id) {
         Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new ReservationNotFoundException(String.format("Cannot find reservation with ID %s", id)));
 
         if (reservation.getEndsAt().isAfter(LocalDateTime.now())) {
@@ -65,7 +65,7 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
         reservation.setStatus(EReservationStatus.CANCELLED);
-        reservationRepository.save(reservation);
+        return reservationRepository.save(reservation);
     }
 
     private boolean isReservable(long parkingSpaceId, LocalDateTime start, LocalDateTime end) {

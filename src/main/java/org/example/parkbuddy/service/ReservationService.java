@@ -14,5 +14,5 @@ public interface ReservationService {
 
     List<Reservation> findAllReservationsByParkingSpace(long parkingSpaceId);
 
-    void cancelReservation(UUID id);
+    Reservation cancelReservation(UUID id);
 }
