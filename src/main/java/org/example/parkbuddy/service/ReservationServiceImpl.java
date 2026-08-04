@@ -2,6 +2,7 @@ package org.example.parkbuddy.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.parkbuddy.dto.CreateReservationDTO;
+import org.example.parkbuddy.exception.IncorrectTimeFrameException;
 import org.example.parkbuddy.exception.ParkingSpaceNotFoundException;
 import org.example.parkbuddy.exception.ReservationConflictException;
 import org.example.parkbuddy.exception.ReservationNotFoundException;
@@ -27,6 +28,10 @@ public class ReservationServiceImpl implements ReservationService {
     public Reservation createReservation(CreateReservationDTO dto) {
         if (!isReservable(dto.parkingSpaceId, dto.startTime, dto.endTime)) {
             throw new ReservationConflictException("Cannot create reservation because of a reservation conflict");
+        }
+
+        if (!isValidTimeFrame(dto.startTime, dto.endTime)) {
+            throw new IncorrectTimeFrameException("Reservation time must be at least 30 minutes");
         }
 
         Reservation reservation = new Reservation();
@@ -87,5 +92,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     private boolean isReservable(long parkingSpaceId, LocalDateTime start, LocalDateTime end) {
         return !reservationRepository.existsByParkingSpace_IdAndStartsAtLessThanAndEndsAtGreaterThan(parkingSpaceId, end, start);
+    }
+
+    private boolean isValidTimeFrame(LocalDateTime start, LocalDateTime end) {
+        return start.plusMinutes(30).isBefore(end);
     }
 }

@@ -35,4 +35,12 @@ public class GlobalExceptionHandler {
         log.error(errorMessage);
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(IncorrectTimeFrameException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    private ResponseEntity<?> handleIncorrectTimeFrameException(IncorrectTimeFrameException ex, HttpServletRequest request) {
+        String errorMessage = String.format("@%s - %s", request.getRequestURI(), ex.getMessage());
+        log.error(errorMessage);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }
