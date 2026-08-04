@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -52,6 +53,9 @@ public class Reservation {
     @NotNull(message = "Missing value for reservation end time")
     @Column(nullable = false)
     private LocalDateTime endsAt;
+
+    @Enumerated(EnumType.STRING)
+    private EReservationStatus status = EReservationStatus.WAITING;
 
     @AssertTrue(message = "Incorrect reservation time: reservation end time must be after the start time")
     private boolean isValidTimeRange() {

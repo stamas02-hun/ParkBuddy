@@ -27,4 +27,12 @@ public class GlobalExceptionHandler {
         log.error(errorMessage);
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(ReservationNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    private ResponseEntity<?> handleReservationNotFoundException(ReservationNotFoundException ex, HttpServletRequest request) {
+        String errorMessage = String.format("@%s - %s", request.getRequestURI(), ex.getMessage());
+        log.error(errorMessage);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
 }

@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.example.parkbuddy.dto.CreateReservationDTO;
 import org.example.parkbuddy.exception.ParkingSpaceNotFoundException;
 import org.example.parkbuddy.exception.ReservationConflictException;
+import org.example.parkbuddy.exception.ReservationNotFoundException;
+import org.example.parkbuddy.model.EReservationStatus;
 import org.example.parkbuddy.model.Reservation;
 import org.example.parkbuddy.repository.ParkingSpaceRepository;
 import org.example.parkbuddy.repository.ReservationRepository;
@@ -48,7 +50,22 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void cancelReservation(UUID id) {
-        
+        Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new ReservationNotFoundException(String.format("Cannot find reservation with ID %s", id)));
+
+        if (reservation.getEndsAt().isAfter(LocalDateTime.now())) {
+            throw new ReservationConflictException("Cannot cancel reservation because it already ended");
+        }
+
+        if (reservation.getStatus() == EReservationStatus.COMPLETED) {
+            throw new ReservationConflictException("Cannot cancel reservation because reservation has already been completed");
+        }
+
+        if (reservation.getStatus() == EReservationStatus.CANCELLED) {
+            throw new ReservationConflictException("Cannot cancel reservation because reservation has already been cancelled");
+        }
+
+        reservation.setStatus(EReservationStatus.CANCELLED);
+        reservationRepository.save(reservation);
     }
 
     private boolean isReservable(long parkingSpaceId, LocalDateTime start, LocalDateTime end) {
