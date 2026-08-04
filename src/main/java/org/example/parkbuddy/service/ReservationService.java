@@ -15,4 +15,6 @@ public interface ReservationService {
     List<Reservation> findAllReservationsByParkingSpace(long parkingSpaceId);
 
     Reservation cancelReservation(UUID id);
+
+    void validateReservationState();
 }

@@ -1,5 +1,6 @@
 package org.example.parkbuddy.repository;
 
+import org.example.parkbuddy.model.EReservationStatus;
 import org.example.parkbuddy.model.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -13,4 +14,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, UUID> 
     boolean existsByParkingSpace_IdAndStartsAtLessThanAndEndsAtGreaterThan(long id, LocalDateTime endsAt, LocalDateTime startsAt);
 
     List<Reservation> findAllByParkingSpace_Id(long id);
+
+    List<Reservation> findAllByStatusIn(List<EReservationStatus> statuses);
 }

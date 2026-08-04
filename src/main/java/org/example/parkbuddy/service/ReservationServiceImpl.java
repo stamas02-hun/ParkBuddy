@@ -9,6 +9,7 @@ import org.example.parkbuddy.model.EReservationStatus;
 import org.example.parkbuddy.model.Reservation;
 import org.example.parkbuddy.repository.ParkingSpaceRepository;
 import org.example.parkbuddy.repository.ReservationRepository;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -66,6 +67,22 @@ public class ReservationServiceImpl implements ReservationService {
 
         reservation.setStatus(EReservationStatus.CANCELLED);
         return reservationRepository.save(reservation);
+    }
+
+    @Override
+    @Scheduled(fixedDelay = 60000)
+    public void validateReservationState() {
+        List<Reservation> reservationsToCheck = reservationRepository.findAllByStatusIn(List.of(EReservationStatus.ACTIVE, EReservationStatus.WAITING));
+
+        for (Reservation reservation : reservationsToCheck) {
+            if (reservation.getStatus().equals(EReservationStatus.ACTIVE) && reservation.getEndsAt().isBefore(LocalDateTime.now())) {
+                reservation.setStatus(EReservationStatus.COMPLETED);
+            } else if (reservation.getStatus().equals(EReservationStatus.WAITING) && reservation.getStartsAt().isAfter(LocalDateTime.now())) {
+                reservation.setStatus(EReservationStatus.ACTIVE);
+            }
+        }
+
+        reservationRepository.saveAll(reservationsToCheck);
     }
 
     private boolean isReservable(long parkingSpaceId, LocalDateTime start, LocalDateTime end) {
